@@ -1,0 +1,19 @@
+# Изменено в проекте «Чёрный заслон»: убран ежедневный запуск по расписанию,
+# проверка на живых сайтах запускается только вручную (Actions → Live Canary → Run workflow).
+name: Live Canary
+
+on:
+  workflow_dispatch:
+
+jobs:
+  live-canary:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: xvfb-run --auto-servernum npm run test:canary

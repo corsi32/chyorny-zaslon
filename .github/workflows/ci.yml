@@ -1,0 +1,26 @@
+# Изменено в проекте «Чёрный заслон»: добавлен проект ru-pii; образ ubuntu-24.04 зафиксирован,
+# потому что на ubuntu-latest, который переходит на Ubuntu 26, не ставятся зависимости Playwright.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build
+      - run: npm run build:firefox
+      - run: xvfb-run --auto-servernum npm run test:e2e -- --project=fixtures --project=network --project=ru-pii

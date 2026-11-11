@@ -1,0 +1,10 @@
+{
+  "extName": {
+    "message": "Chyorny Zaslon — mask personal data before it reaches AI chats",
+    "description": "Extension name shown in the store and browser UI."
+  },
+  "extDescription": {
+    "message": "Phone numbers, addresses, IDs, cards and secrets stay out of AI chats. Checked on your device, no account, open source.",
+    "description": "Extension description shown in the store and browser UI."
+  }
+}

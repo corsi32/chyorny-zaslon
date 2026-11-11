@@ -1,0 +1,62 @@
+// Изменено в проекте «Чёрный заслон», 2026: новые типы passport, snils, bank_account, address_ru. Подробнее — в NOTICE.
+/**
+ * Detection contract — identical shape regardless of the underlying engine
+ * (TS regex engine now, shared Rust→WASM engine later). Swapping the engine
+ * must not touch any consumer of this module.
+ */
+
+/** Stable category of a detected sensitive value. */
+export type FindingType =
+  | 'email'
+  | 'phone'
+  | 'api_key'
+  | 'token'
+  | 'private_key'
+  | 'credit_card'
+  | 'iban'
+  | 'ip_address'
+  | 'uuid'
+  | 'secret'
+  | 'custom'
+  | 'person'
+  | 'organization'
+  | 'address'
+  | 'location'
+  // Российские персональные данные.
+  | 'passport'
+  | 'snils'
+  | 'bank_account'
+  | 'address_ru';
+
+/** A single detected sensitive value within the scanned text. */
+export interface Finding {
+  /** Category, drives placeholder naming and masking policy. */
+  readonly type: FindingType;
+  /** The exact matched substring. */
+  readonly value: string;
+  /** Inclusive start index in the scanned text. */
+  readonly start: number;
+  /** Exclusive end index in the scanned text. */
+  readonly end: number;
+  /** Id of the detector that produced this finding (for diagnostics). */
+  readonly detector: string;
+}
+
+export interface ScanOptions {
+  /** When set, only these types are scanned. Otherwise all are scanned. */
+  readonly types?: readonly FindingType[];
+  /**
+   * Soft wall-clock budget for the scan (ms). When exceeded, remaining detectors
+   * are skipped so a pathological custom regex cannot freeze the page. Default
+   * applies in {@link TsEngine}.
+   */
+  readonly budgetMs?: number;
+}
+
+/**
+ * The single abstraction the rest of the extension depends on.
+ * Implementations: TsEngine (Phase 0) | WasmEngine (Phase 2) — interchangeable.
+ */
+export interface DetectionEngine {
+  scan(text: string, opts?: ScanOptions): Promise<Finding[]>;
+}

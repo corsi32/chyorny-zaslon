@@ -1,0 +1,41 @@
+# Изменено в проекте «Чёрный заслон»: вместо отправки в магазины Offsend —
+# выпуск релиза на GitHub с архивами для Chrome и Firefox.
+# Запуск: отправить тег вида v0.4.0 (git tag v0.4.0 && git push origin v0.4.0).
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Проверки перед выпуском.
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+
+      - name: Сборка архивов для Chrome и Firefox
+        run: npm run zip:all
+
+      - name: Релиз на GitHub
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Чёрный заслон ${{ github.ref_name }}
+          body_path: docs/RELEASE_NOTES.md
+          files: |
+            .output/*-chrome.zip
+            .output/*-firefox.zip
+            .output/*-sources.zip

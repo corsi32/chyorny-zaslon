@@ -1,0 +1,10 @@
+{
+  "extName": {
+    "message": "Chyorny Zaslon — masque les données personnelles avant l’IA",
+    "description": "Extension name shown in the store and browser UI."
+  },
+  "extDescription": {
+    "message": "Téléphones, adresses, papiers, cartes et secrets restent hors des chats IA. Vérification locale, sans compte, open source.",
+    "description": "Extension description shown in the store and browser UI."
+  }
+}

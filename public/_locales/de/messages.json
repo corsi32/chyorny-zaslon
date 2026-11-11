@@ -1,0 +1,10 @@
+{
+  "extName": {
+    "message": "Chyorny Zaslon — persönliche Daten vor KI-Chats maskieren",
+    "description": "Extension name shown in the store and browser UI."
+  },
+  "extDescription": {
+    "message": "Telefonnummern, Adressen, Ausweise, Karten und Geheimnisse bleiben aus KI-Chats heraus. Lokale Prüfung, ohne Konto, Open Source.",
+    "description": "Extension description shown in the store and browser UI."
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "extName": {
+    "message": "Chyorny Zaslon — oculta dados pessoais antes de enviar à IA",
+    "description": "Extension name shown in the store and browser UI."
+  },
+  "extDescription": {
+    "message": "Telefones, endereços, documentos, cartões e segredos não vão para os chats de IA. Verificação local, sem conta, código aberto.",
+    "description": "Extension description shown in the store and browser UI."
+  }
+}

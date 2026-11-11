@@ -1,0 +1,46 @@
+Чёрный заслон (Chyorny Zaslon)
+Copyright 2026 corsi32 (https://github.com/corsi32)
+
+Этот продукт является доработкой браузерного расширения Offsend for the Browser
+версии 0.3.0: https://github.com/offsend/browser-extension
+Copyright Lab13, Simon Hudishkin. Распространяется по лицензии Apache License,
+Version 2.0 (файл LICENSE).
+
+Доработка распространяется по той же лицензии Apache License, Version 2.0.
+
+ЧТО ИЗМЕНЕНО ПО СРАВНЕНИЮ С ИСХОДНЫМ ПРОЕКТОМ
+
+Добавлены новые файлы:
+  src/core/detection/ru-address.ts       детектор почтовых адресов РФ
+  src/core/detection/ru-documents.ts     СНИЛС, паспорт РФ, банковские счета, платёжные системы карт
+  src/core/detection/normalize.ts        нормализация текста из Word и с сайтов
+  src/core/detection/postal-index.ts     проверка почтового индекса по справочнику
+  src/core/detection/data/postal-index-ru.ts  сжатый справочник почтовых индексов
+  scripts/build-postal-index.mjs         сборка справочника индексов
+  tests/unit/ru-detectors.test.ts, corpus-metrics.test.ts, glued-paste.test.ts,
+  real-world-text.test.ts, fuzz.test.ts, performance.test.ts
+  tests/corpus/ru-pii.corpus.ts          размеченный набор текстов
+  tests/bench/detection.bench.ts         бенчмарк
+  tests/e2e/ru-pii.spec.ts               сквозные тесты российских данных
+  docs/RU-DETECTORS.md                   описание детекторов
+  docs/assets/icon.svg, src/assets/icon.png  новая иконка
+
+Изменены файлы исходного проекта, в начале каждого есть пометка об изменении:
+  src/core/detection/detectors.ts, ts-engine.ts, types.ts
+  src/core/i18n/de.ts, en.ts, es.ts, fr.ts, pt.ts, ru.ts
+  src/core/storage/migrations.ts, portable.ts, schema.ts
+  src/entrypoints/options/App.tsx, src/entrypoints/*/index.html
+  src/ui/components/Brand.tsx
+  tests/unit/detection.test.ts, storage.test.ts
+  tests/e2e/files.spec.ts, fixtures.spec.ts, policy.spec.ts, helpers/extension.ts
+  wxt.config.ts, playwright.config.ts, eslint.config.js
+  package.json, public/_locales/*/messages.json — название, версия, ссылки
+  .github/workflows/*.yml — проверка ru-pii в CI, выпуск релизов на GitHub
+  README.md — новый; исходный README сохранён в docs/UPSTREAM-README.md
+  SECURITY.md — контакты для сообщений об уязвимостях
+
+Название «Offsend» и его логотип принадлежат авторам исходного проекта и в
+доработанной версии не используются в качестве названия продукта.
+
+Справочник почтовых индексов собран из эталонного справочника почтовых индексов
+ФГУП «Почта России» в выгрузке https://github.com/sanmai/pindx.

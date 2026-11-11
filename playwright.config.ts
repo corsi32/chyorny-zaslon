@@ -1,0 +1,46 @@
+// Изменено в проекте «Чёрный заслон», 2026: добавлен проект ru-pii со сквозными тестами российских данных. Подробнее — в NOTICE.
+import { defineConfig, devices } from '@playwright/test';
+
+export default defineConfig({
+  testDir: './tests/e2e',
+  timeout: 30_000,
+  expect: { timeout: 5_000 },
+  fullyParallel: false,
+  reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list',
+  use: {
+    ...devices['Desktop Chrome'],
+    trace: 'retain-on-failure',
+  },
+  projects: [
+    {
+      name: 'fixtures',
+      testMatch: /fixtures\.spec\.ts/,
+    },
+    {
+      name: 'policy',
+      testMatch: /policy\.spec\.ts/,
+    },
+    {
+      name: 'files',
+      testMatch: /files\.spec\.ts/,
+    },
+    {
+      name: 'welcome',
+      testMatch: /welcome\.spec\.ts/,
+    },
+    {
+      // Российские персональные данные во всех режимах и способах ввода.
+      name: 'ru-pii',
+      testMatch: /ru-pii\.spec\.ts/,
+    },
+    {
+      name: 'network',
+      testMatch: /network\.spec\.ts/,
+    },
+    {
+      name: 'canary',
+      testMatch: /canary\.spec\.ts/,
+      grepInvert: process.env.OFFSEND_CANARY ? undefined : /.*/,
+    },
+  ],
+});

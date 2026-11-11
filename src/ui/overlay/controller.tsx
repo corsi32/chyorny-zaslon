@@ -1,0 +1,97 @@
+import { createRoot } from 'react-dom/client';
+import type { Finding } from '@/core/detection';
+import { Overlay, type OverlayState, type ReviewAskState, type ReviewState } from './Overlay';
+import { OVERLAY_CSS } from './styles';
+
+export interface ToastAction {
+  readonly label: string;
+  readonly onClick: () => void;
+}
+
+export interface OverlayController {
+  showReview(review: ReviewState): void;
+  hideReview(): void;
+  showReviewAsk(ask: ReviewAskState): void;
+  hideReviewAsk(): void;
+  toast(text: string, action?: ToastAction): void;
+  /** Update the live "will be masked" chip (empty array hides it). */
+  setLiveFindings(findings: readonly Finding[]): void;
+  destroy(): void;
+}
+
+/**
+ * Mounts the overlay React tree inside a Shadow DOM root so the host site's
+ * styles can't break our UI and ours can't leak into the page. Returns an
+ * imperative controller the interceptor drives.
+ */
+export function mountOverlay(doc: Document = document): OverlayController {
+  const host = doc.createElement('div');
+  host.id = 'offsend-overlay-host';
+  doc.body.appendChild(host);
+
+  const shadow = host.attachShadow({ mode: 'open' });
+  const style = doc.createElement('style');
+  style.textContent = OVERLAY_CSS;
+  shadow.appendChild(style);
+  const container = doc.createElement('div');
+  shadow.appendChild(container);
+
+  const root = createRoot(container);
+  let state: OverlayState = { review: null, reviewAsk: null, toasts: [], live: [] };
+  let nextToastId = 1;
+  let nextReviewSession = 1;
+  const timers = new Set<ReturnType<typeof setTimeout>>();
+
+  const render = () => root.render(<Overlay state={state} />);
+  const set = (fn: (prev: OverlayState) => OverlayState) => {
+    state = fn(state);
+    render();
+  };
+
+  render();
+
+  return {
+    showReview(review) {
+      set((prev) => ({
+        ...prev,
+        review: { ...review, sessionId: review.sessionId ?? nextReviewSession++ },
+      }));
+    },
+    hideReview() {
+      set((prev) => ({ ...prev, review: null }));
+    },
+    showReviewAsk(ask) {
+      set((prev) => ({ ...prev, reviewAsk: ask }));
+    },
+    hideReviewAsk() {
+      set((prev) => ({ ...prev, reviewAsk: null }));
+    },
+    setLiveFindings(findings) {
+      set((prev) => ({ ...prev, live: findings }));
+    },
+    toast(text, action) {
+      const id = nextToastId++;
+      set((prev) => ({
+        ...prev,
+        toasts: [...prev.toasts, { id, text, action }],
+      }));
+      const timer = setTimeout(
+        () => {
+          set((prev) => ({
+            ...prev,
+            toasts: prev.toasts.filter((t) => t.id !== id),
+          }));
+          timers.delete(timer);
+        },
+        action ? 8000 : 3500,
+      );
+      timers.add(timer);
+    },
+    destroy() {
+      timers.forEach(clearTimeout);
+      timers.clear();
+      root.unmount();
+      host.remove();
+    },
+  };
+}
