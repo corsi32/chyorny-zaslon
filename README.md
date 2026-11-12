@@ -70,7 +70,7 @@ npm run zip:all        # архивы для магазинов в .output/
 ## Проверка качества
 
 ```bash
-npm test                # 289 модульных тестов, метрики на размеченном наборе
+npm test                # 290 модульных тестов, метрики на размеченном наборе
 npm run test:e2e        # 24 сквозных теста в Chromium с установленным расширением
 npm run bench           # замер скорости
 npm run lint && npm run typecheck

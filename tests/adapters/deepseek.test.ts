@@ -1,3 +1,4 @@
+// Изменено в проекте «Чёрный заслон», 2026: тест нового интерфейса DeepSeek. Подробнее — в NOTICE.
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { deepseekAdapter } from '@/core/adapters/deepseek';
 import type { Unsubscribe } from '@/core/adapters';
@@ -38,6 +39,26 @@ describe('deepseek adapter', () => {
     composer.element.textContent = '';
     (composer.element as HTMLTextAreaElement).value = 'hello';
     // healthCheck uses scoped send resolution — must stay ok with nearby send.
+    expect(deepseekAdapter.healthCheck(document).status).toBe('ok');
+  });
+
+  it('finds the send button in the 2026 UI (no #chat-input, no aria-disabled)', () => {
+    document.body.innerHTML = `
+      <main>
+        <div class="composer">
+          <textarea placeholder="Сообщение для DeepSeek"></textarea>
+          <div class="toolbar">
+            <div role="button" class="ds-button ds-button--iconLabelPrimary ds-button--icon">Глубокое мышление</div>
+            <div role="button" class="ds-button ds-button--iconLabelPrimary ds-button--icon">Умный поиск</div>
+            <div role="button" class="ds-button ds-button--primary ds-button--filled ds-button--circle" id="send"></div>
+          </div>
+        </div>
+      </main>
+    `;
+    const composer = deepseekAdapter.findComposer(document)!;
+    expect(composer).not.toBeNull();
+    // С текстом в поле отсутствие кнопки отправки помечается как «неполная защита».
+    (composer.element as HTMLTextAreaElement).value = 'hello';
     expect(deepseekAdapter.healthCheck(document).status).toBe('ok');
   });
 

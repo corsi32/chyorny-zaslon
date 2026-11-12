@@ -31,6 +31,7 @@ Version 2.0 (файл LICENSE).
   src/core/storage/migrations.ts, portable.ts, schema.ts
   src/entrypoints/options/App.tsx, src/entrypoints/*/index.html
   src/ui/components/Brand.tsx
+  src/core/adapters/deepseek/index.ts, tests/adapters/deepseek.test.ts — новый интерфейс DeepSeek
   tests/unit/detection.test.ts, storage.test.ts
   tests/e2e/files.spec.ts, fixtures.spec.ts, policy.spec.ts, helpers/extension.ts
   wxt.config.ts, playwright.config.ts, eslint.config.js
