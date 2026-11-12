@@ -48,6 +48,14 @@
 
 ## Установка
 
+<!-- Раскомментировать после одобрения в магазинах и вписать ссылки:
+### Из магазина
+
+- [Firefox Add-ons](https://addons.mozilla.org/ru/firefox/addon/ССЫЛКА/)
+- [Microsoft Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/ССЫЛКА)
+- [Chrome Web Store](https://chromewebstore.google.com/detail/ССЫЛКА)
+-->
+
 ### Готовая сборка
 
 Скачайте архив со страницы [Releases](https://github.com/corsi32/chyorny-zaslon/releases).
@@ -66,6 +74,10 @@ npm run build          # сборка для Chrome: .output/chrome-mv3
 npm run build:firefox  # сборка для Firefox: .output/firefox-mv2
 npm run zip:all        # архивы для магазинов в .output/
 ```
+
+## Конфиденциальность
+
+Расширение ничего не собирает и не отправляет. Подробно — в [PRIVACY.md](PRIVACY.md).
 
 ## Проверка качества
 

@@ -1,6 +1,6 @@
 {
   "extName": {
-    "message": "Chyorny Zaslon — mask personal data before it reaches AI chats",
+    "message": "Chyorny Zaslon — PII shield for AI chats",
     "description": "Extension name shown in the store and browser UI."
   },
   "extDescription": {
